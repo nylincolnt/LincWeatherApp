@@ -1,0 +1,49 @@
+/* App.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #e0f7fa;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 450px;
+  background-color: white;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.weather-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.weather-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.alert-section {
+  margin-top: 20px;
+}
+
+.hourly-forecast, .daily-forecast {
+  margin-top: 20px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
