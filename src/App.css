@@ -11,8 +11,10 @@ body {
   font-family: 'Arial', sans-serif;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start; /* Changed from center to flex-start for scrolling */
+  min-height: 100vh;
+  overflow-y: scroll; /* Enable vertical scrolling */
+  scroll-behavior: smooth; /* Smooth scrolling effect */
 }
 
 .container {
@@ -30,20 +32,17 @@ body {
   margin-top: 20px;
 }
 
-.weather-icon {
-  width: 24px;
-  height: 24px;
+.hourly-forecast {
+  display: flex;
+  overflow-x: scroll; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Keep items in a single row */
 }
 
-.alert-section {
-  margin-top: 20px;
+.hourly-forecast::-webkit-scrollbar {
+  height: 8px;
 }
 
-.hourly-forecast, .daily-forecast {
-  margin-top: 20px;
-}
-
-.icon {
-  width: 40px;
-  height: 40px;
+.hourly-forecast::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 8px;
 }

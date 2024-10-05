@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Box, Text, Button, Image, Flex } from '@chakra-ui/react';
+import { Box, Text, Button, Image, Flex, Collapse } from '@chakra-ui/react';
 import './App.css';
 
 function App() {
   const [tempInF, setTempInF] = useState(true);
+  const [expandedDay, setExpandedDay] = useState(null);
+  const [showHourlyDetails, setShowHourlyDetails] = useState(null);
 
   const toggleTemp = () => {
     setTempInF(!tempInF);
@@ -13,6 +15,14 @@ function App() {
   const highTemp = tempInF ? 78 : ((78 - 32) * 5) / 9;
   const lowTemp = tempInF ? 65 : ((65 - 32) * 5) / 9;
 
+  const handleDayClick = (day) => {
+    setExpandedDay(expandedDay === day ? null : day);
+  };
+
+  const handleHourlyClick = (hour) => {
+    setShowHourlyDetails(showHourlyDetails === hour ? null : hour);
+  };
+
   return (
     <Box 
       className="container" 
@@ -21,8 +31,8 @@ function App() {
       borderRadius="lg" 
       boxShadow="lg" 
       maxW="450px"
-      border="2px solid"  // Added border
-      borderColor="gray.400" // Set border color
+      border="2px solid"
+      borderColor="gray.400"
     >
       {/* Greeting */}
       <Text fontSize="2xl" fontWeight="bold" mb={4} color="blue.700">
@@ -73,10 +83,10 @@ function App() {
 
       {/* Buttons for changing temperature and refreshing */}
       <Flex justifyContent="center" mt={6}>
-        <Button colorScheme="blue" mr={4} onClick={toggleTemp}>
+        <Button colorScheme="blue" mr={4} onClick={toggleTemp} _hover={{ transform: 'scale(1.05)', transition: '0.2s' }}>
           {tempInF ? 'Switch to Celsius' : 'Switch to Fahrenheit'}
         </Button>
-        <Button colorScheme="blue" onClick={() => window.location.reload()}>
+        <Button colorScheme="blue" onClick={() => window.location.reload()} _hover={{ transform: 'scale(1.05)', transition: '0.2s' }}>
           Refresh
         </Button>
       </Flex>
@@ -90,11 +100,21 @@ function App() {
       </Box>
 
       {/* Hourly Forecast Section */}
-      <Box className="hourly-forecast" mt={8}>
-        <Text fontSize="2xl" fontWeight="bold" color="blue.700">Hourly Forecast</Text>
-        <Flex justifyContent="space-between" mt={4}>
-          {['12 PM', '1 PM', '2 PM', '3 PM'].map((time, index) => (
-            <Box textAlign="center" key={index}>
+      <Text fontSize="2xl" fontWeight="bold" color="blue.700" mt={8}>
+        Hourly Forecast
+      </Text>
+      <Box className="hourly-forecast" mt={4} overflowX="scroll" whiteSpace="nowrap">
+        <Flex>
+          {['12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM'].map((time, index) => (
+            <Box
+              textAlign="center"
+              key={index}
+              onClick={() => handleHourlyClick(time)}
+              cursor="pointer"
+              mx={2}
+              minWidth="100px" // Ensuring width is consistent
+              _hover={{ backgroundColor: 'gray.200', borderRadius: 'md', transition: '0.2s' }}
+            >
               <Text>{time}</Text>
               <Image
                 src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png"
@@ -102,6 +122,9 @@ function App() {
                 boxSize="40px"
               />
               <Text>{75 + index}°F</Text>
+              <Collapse in={showHourlyDetails === time}>
+                <Text mt={2} color="gray.600">Feels like {72 + index}°F, light breeze.</Text>
+              </Collapse>
             </Box>
           ))}
         </Flex>
@@ -112,7 +135,13 @@ function App() {
         <Text fontSize="2xl" fontWeight="bold" color="blue.700">Weekly Forecast</Text>
         <Flex justifyContent="space-between" mt={4}>
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((day, index) => (
-            <Box textAlign="center" key={index}>
+            <Box
+              textAlign="center"
+              key={index}
+              onClick={() => handleDayClick(day)}
+              cursor="pointer"
+              _hover={{ backgroundColor: 'gray.200', borderRadius: 'md', transition: '0.2s' }}
+            >
               <Text>{day}</Text>
               <Image
                 src={
@@ -125,6 +154,9 @@ function App() {
               />
               <Text>High: {73 + index}°F</Text>
               <Text>Low: {62 - index}°F</Text>
+              <Collapse in={expandedDay === day}>
+                <Text mt={2} color="gray.600">Wind: 7 mph, Humidity: 60%, UV Index: Low</Text>
+              </Collapse>
             </Box>
           ))}
         </Flex>
